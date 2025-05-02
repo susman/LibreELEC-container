@@ -10,7 +10,7 @@ RUN file_name="${dl_url##*/}"; no_ext="${file_name/.img.gz/}"; \
   part_sectorsize="$(echo $part_info | jq '.partitiontable.sectorsize')"; \
   part_start="$(echo $part_info | jq '.partitiontable.partitions[0].start')"; \
   mkdir /root/lelec && fatcat -O $(($part_start*$part_sectorsize)) "${no_ext}.img" \
-    -r /SYSTEM  > "${no_ext}.squashfs" && sqfs2tar "${no_ext}.squashfs" | \
+    -r /SYSTEM > "${no_ext}.squashfs" && sqfs2tar "${no_ext}.squashfs" | \
     tar xpf - -C /root/lelec
 
 FROM scratch
@@ -27,6 +27,8 @@ RUN mv /usr/lib/systemd/libsystemd-shared-*.so /tmp && \
     sed -i 's/.*service\.libreelec\.settings.*//' \
       /usr/share/kodi/system/addon-manifest.xml && \
     ln -s /etc/ssl/cacert.pem.system /run/libreelec/cacert.pem && \
+    ln -snf /usr/share/zoneinfo/$(curl -s https://ipapi.co/timezone) \
+      /etc/localtime && \
     mv /tmp/libsystemd-shared-*.so /usr/lib/systemd/
 
 ENTRYPOINT ["/usr/lib/kodi/kodi.bin", "--standalone", "-fs", "--audio-backend=pulseaudio"]
