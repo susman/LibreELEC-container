@@ -57,6 +57,7 @@ podman run --rm --replace --init --privileged \ # as privileged as the user runn
   --gidmap="+g39:@666:1" \ # map this container gid to that host gid
   --gidmap="+g105:@69:1" \
   --gidmap="+g104:@420:1" \
+  -v $(realpath /etc/localtime):/etc/localtime:ro \
   -v /dev/input:/dev/input:ro \
   -v /run/udev:/run/udev:ro \
   -v <path-to-kodi-storage-dir>:/storage \ # mount LibreELEC /storage on a local dir

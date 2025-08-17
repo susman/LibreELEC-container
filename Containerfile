@@ -16,7 +16,7 @@ RUN file_name="${dl_url##*/}"; no_ext="${file_name/.img.gz/}"; \
 FROM scratch
 COPY --from=0 /root/lelec/ /
 RUN mv /usr/lib/systemd/libsystemd-shared-*.so /tmp && \
-    rm /etc/hostname && \
+    rm /etc/hostname /etc/localtime && \
     rm -f /usr/bin/systemd* && \
     rm -rf /usr/lib/systemd/* && \
     rm -rf /usr/lib/kernel* && \
@@ -27,8 +27,6 @@ RUN mv /usr/lib/systemd/libsystemd-shared-*.so /tmp && \
     sed -i 's/.*service\.libreelec\.settings.*//' \
       /usr/share/kodi/system/addon-manifest.xml && \
     ln -s /etc/ssl/cacert.pem.system /run/libreelec/cacert.pem && \
-    ln -snf /usr/share/zoneinfo/$(curl -s https://ipapi.co/timezone) \
-      /etc/localtime && \
     mv /tmp/libsystemd-shared-*.so /usr/lib/systemd/
 
 ENTRYPOINT ["/usr/lib/kodi/kodi.bin", "--standalone", "-fs", "--audio-backend=pulseaudio"]
