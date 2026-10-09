@@ -1,0 +1,36 @@
+[Unit]
+Description=Kodi Container
+After=pipewire-pulse.service kodi-volume.service build-local-images.service
+Requires=pipewire-pulse.service kodi-volume.service
+ConditionPathExists=%h/containers/kodi/unit.env
+
+[Container]
+Image=localhost/kodi:latest
+RunInit=true
+PodmanArgs=--privileged
+ContainerName=kodi
+HostName=kodi
+GroupAdd=keep-groups
+GIDMap=${VIDEO}
+GIDMap=${RENDER}
+GIDMap=${INPUT}
+Volume=/dev/input:/dev/input:ro
+Volume=/run/udev:/run/udev:ro
+Volume=%t/pulse/native:/tmp/pulse-socket
+Volume=/etc/localtime:/etc/localtime:ro
+Volume=kodi.volume:/storage
+Environment=KODI_HOME=/usr/share/kodi
+Environment=KODI_TEMP=/storage/.kodi/temp
+Environment=HOME=/storage
+Environment=PULSE_SERVER=unix:/tmp/pulse-socket
+PublishPort=8080:8080
+PublishPort=9090:9090
+
+[Service]
+EnvironmentFile=%h/containers/kodi/unit.env
+Restart=always
+RestartSec=10
+LogLevelMax=warning
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+[Build]
+BuildArg=dl_url=
+File=%h/containers/kodi/Containerfile
+ImageTag=localhost/kodi:latest
+
+[Service]
+ExecStartPre=/usr/bin/rm -f %h/containers/kodi/unit.env
+ExecStop=/usr/bin/systemctl --user start map-gids.service
+TimeoutSec=900
