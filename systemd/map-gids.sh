@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -xe
 cont_groups+=($(podman run -t --rm --entrypoint=/bin/ash localhost/kodi:latest \
-  -c "egrep '(video|render|input)' /etc/group"))
+  -c "egrep '(video|audio|render|input)' /etc/group"))
 
 for x in ${!cont_groups[@]}; do
   ent=${cont_groups[$x]}

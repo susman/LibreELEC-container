@@ -1,6 +1,6 @@
 [Unit]
 Description=Kodi Container
-After=pipewire-pulse.service kodi-volume.service build-local-images.service
+After=pipewire-pulse.service kodi-volume.service build-kodi-image.service
 Requires=pipewire-pulse.service kodi-volume.service
 ConditionPathExists=%h/containers/kodi/unit.env
 
@@ -12,6 +12,7 @@ ContainerName=kodi
 HostName=kodi
 GroupAdd=keep-groups
 GIDMap=${VIDEO}
+GIDMap=${AUDIO}
 GIDMap=${RENDER}
 GIDMap=${INPUT}
 Volume=/dev/input:/dev/input:ro
@@ -28,8 +29,10 @@ PublishPort=9090:9090
 
 [Service]
 EnvironmentFile=%h/containers/kodi/unit.env
+ExecStop=/usr/bin/bash -c 'podman exec kodi kodi-send -a Powerdown && sleep 25'
+SuccessExitStatus=64
 Restart=always
-RestartSec=10
+RestartSec=30
 LogLevelMax=warning
 
 [Install]

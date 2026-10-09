@@ -79,9 +79,8 @@ It's much easier to manage the whole thing with systemd units.
 $ mkdir -p ~/containers/kodi/
 $ mkdir -p ~/.config/containers/systemd/
 $ for x in Containerfile systemd/map-gids.sh; do ln -snf $(realpath $x) ~/containers/kodi/; done
-$ for x in systemd/{kodi.container,kodi.volume}; do ln -snf $(realpath $x) ~/.config/containers/systemd/; done
+$ for x in systemd/{kodi.build,kodi.container,kodi.volume}; do cp $x ~/.config/containers/systemd/; done
 $ for x in systemd/{build-kodi-image.service,map-gids.service}; do cp $x ~/.config/systemd/user/; done
-$ cp systemd/kodi.build ~/.config/containers/systemd/kodi.build
 ```
 Edit the `~/.config/containers/systemd/kodi.build` file to set `BuildArg=dl_url=` variable.
 ```bash
