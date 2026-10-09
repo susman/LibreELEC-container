@@ -1,0 +1,13 @@
+[Unit]
+Description=Build kodi image
+Requires=podman-user-wait-network-online.service
+After=podman-user-wait-network-online.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c "podman image exists localhost/kodi:latest || \
+  systemctl --user start kodi-build.service && podman system prune -f"
+
+[Install]
+WantedBy=default.target

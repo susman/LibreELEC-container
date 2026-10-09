@@ -1,0 +1,6 @@
+[Unit]
+Description=Setup LibreELEC and local group id mappings
+
+[Service]
+Type=oneshot
+ExecStart=%h/containers/kodi/map-gids.sh %h/containers/kodi/unit.env
