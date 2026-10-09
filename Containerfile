@@ -20,7 +20,6 @@ RUN mv /usr/lib/systemd/libsystemd-shared-*.so /tmp && \
     rm -f /usr/bin/systemd* && \
     rm -rf /usr/lib/systemd/* && \
     rm -rf /usr/lib/kernel* && \
-    rm -rf /usr/share/alsa && \
     rm -rf /usr/share/kernel* && \
     rm -rf /usr/share/bootloader* && \
     rm -rf /usr/share/kodi/addons/service.libreelec.settings && \
@@ -29,4 +28,4 @@ RUN mv /usr/lib/systemd/libsystemd-shared-*.so /tmp && \
     ln -s /etc/ssl/cacert.pem.system /run/libreelec/cacert.pem && \
     mv /tmp/libsystemd-shared-*.so /usr/lib/systemd/
 
-ENTRYPOINT ["/usr/lib/kodi/kodi.bin", "--standalone", "-fs", "--audio-backend=pulseaudio"]
+ENTRYPOINT ["/usr/lib/kodi/kodi.bin", "--standalone", "-fs"]
